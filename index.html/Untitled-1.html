@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lift With Dia</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+body{
+background:url("download.jfif");
+background-size:cover;
+background-position:center;
+background-repeat:no-repeat;
+min-height:100vh;
+}
+
+.overlay{
+background:rgba(0,0,0,0.75);
+min-height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+padding:20px;
+}
+
+.container{
+width:100%;
+max-width:700px;
+background:#1a1a1a;
+border-radius:20px;
+padding:30px;
+box-shadow:0 0 25px rgba(212,175,55,0.25);
+color:white;
+}
+
+.logo{
+text-align:center;
+margin-bottom:25px;
+}
+
+.logo h1{
+color:#d4af37;
+font-size:38px;
+margin-bottom:10px;
+}
+
+.logo p{
+color:#cfcfcf;
+}
+
+.page{
+display:none;
+}
+
+.page.active{
+display:block;
+}
+
+.goals{
+display:grid;
+grid-template-columns:1fr;
+gap:15px;
+margin-top:20px;
+}
+
+.goal-card{
+background:#2b2b2b;
+border:2px solid transparent;
+padding:20px;
+border-radius:15px;
+cursor:pointer;
+transition:0.3s;
+text-align:center;
+font-size:20px;
+}
+
+.goal-card:hover{
+border-color:#d4af37;
+transform:scale(1.02);
+}
+
+.goal-card.selected{
+border-color:#d4af37;
+background:#333;
+}
+
+label{
+display:block;
+margin-top:15px;
+margin-bottom:5px;
+color:#d4af37;
+}
+
+input,
+select,
+textarea{
+width:100%;
+padding:12px;
+border:none;
+border-radius:10px;
+background:#2b2b2b;
+color:white;
+}
+
+textarea{
+height:90px;
+resize:none;
+}
+
+.btn{
+width:100%;
+padding:14px;
+border:none;
+border-radius:12px;
+cursor:pointer;
+font-size:16px;
+margin-top:15px;
+font-weight:bold;
+}
+
+.gold{
+background:#d4af37;
+color:black;
+}
+
+.dark{
+background:#333;
+color:white;
+}
+
+.whatsapp{
+background:#25D366;
+color:white;
+}
+
+.result{
+background:#111;
+padding:15px;
+border-radius:12px;
+margin-top:15px;
+white-space:pre-line;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="overlay">
+
+<div class="container">
+
+<div class="logo">
+<h1>Lift With Dia</h1>
+<p>Online Coaching For Women</p>
+</div>
+
+<!-- PAGE 1 -->
+
+<div class="page active" id="page1">
+
+<h2>Select Your Goal</h2>
+
+<div class="goals">
+
+<div class="goal-card"
+onclick="selectGoal(this,'Gain Muscle')">
+💪 Gain Muscle
+</div>
+
+<div class="goal-card"
+onclick="selectGoal(this,'Lose Weight')">
+🔥 Lose Weight
+</div>
+
+<div class="goal-card"
+onclick="selectGoal(this,'Bulking')">
+🍽️ Bulking
+</div>
+
+</div>
+
+<button class="btn gold"
+onclick="goToPage2()">
+Next </button>
+
+</div>
+
+<!-- PAGE 2 -->
+
+<div class="page" id="page2">
+
+<h2>Your Information</h2>
+
+<label>Name</label> <input type="text" id="name">
+
+<label>Age</label> <input type="number" id="age">
+
+<label>Height (cm)</label> <input type="number" id="height">
+
+<label>Weight (kg)</label> <input type="number" id="weight">
+
+<label>Training Days Per Week</label> <input type="number" id="days">
+
+<label>Experience Level</label> <select id="experience">
+
+<option>Beginner</option>
+<option>Intermediate</option>
+<option>Advanced</option>
+</select>
+
+<label>Injuries / Health Issues</label>
+
+<textarea id="injuries"></textarea>
+
+<label>Additional Notes</label>
+
+<textarea id="notes"></textarea>
+
+<button class="btn gold"
+onclick="goToPage3()">
+Continue </button>
+
+</div>
+
+<!-- PAGE 3 -->
+
+<div class="page" id="page3">
+
+<h2>Review Information</h2>
+
+<div id="preview" class="result"></div>
+
+<button class="btn dark"
+onclick="copyInfo()">
+📋 Copy Information </button>
+
+<button class="btn whatsapp"
+onclick="sendWhatsApp()">
+📱 Join WhatsApp </button>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+let selectedGoal="";
+
+function selectGoal(card,goal){
+
+selectedGoal=goal;
+
+document.querySelectorAll(".goal-card")
+.forEach(c=>c.classList.remove("selected"));
+
+card.classList.add("selected");
+
+}
+
+function goToPage2(){
+
+if(selectedGoal===""){
+alert("Please select a goal");
+return;
+}
+
+document.getElementById("page1").classList.remove("active");
+document.getElementById("page2").classList.add("active");
+
+}
+
+function goToPage3(){
+
+let text=getMessage();
+
+document.getElementById("preview").innerText=text;
+
+document.getElementById("page2").classList.remove("active");
+document.getElementById("page3").classList.add("active");
+
+}
+
+function getMessage(){
+
+return `Lift With Dia Client
+
+Goal: ${selectedGoal}
+
+Name: ${document.getElementById("name").value}
+
+Age: ${document.getElementById("age").value}
+
+Height: ${document.getElementById("height").value} cm
+
+Weight: ${document.getElementById("weight").value} kg
+
+Training Days: ${document.getElementById("days").value}
+
+Experience: ${document.getElementById("experience").value}
+
+Injuries:
+${document.getElementById("injuries").value}
+
+Notes:
+${document.getElementById("notes").value}`;
+}
+
+function copyInfo(){
+
+navigator.clipboard.writeText(getMessage());
+
+alert("Information copied successfully");
+
+}
+
+function sendWhatsApp(){
+
+let phone="96181739161";
+
+let text=encodeURIComponent(getMessage());
+
+window.open(
+`https://wa.me/${phone}?text=${text}`,
+'_blank'
+);
+
+}
+
+</script>
+
+</body>
+</html>
+
